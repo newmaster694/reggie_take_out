@@ -43,6 +43,9 @@ public class OrdersController {
      * 订单信息分页查询
      * @param page
      * @param pageSize
+     * @param number
+     * @param beginTime
+     * @param endTime
      * @return
      */
     @GetMapping("/page")
@@ -78,5 +81,17 @@ public class OrdersController {
         ordersDtoPage.setRecords(list);
 
         return R.success(ordersDtoPage);
+    }
+
+    /**
+     * 修改订单状态的方法
+     * @param orders
+     * @return
+     */
+    @PutMapping
+    public R<String> updateStatus(@RequestBody Orders orders) {
+        log.info("接收到的数据:{}", orders);
+        ordersService.updateById(orders);
+        return R.success("修改信息成功!");
     }
 }
