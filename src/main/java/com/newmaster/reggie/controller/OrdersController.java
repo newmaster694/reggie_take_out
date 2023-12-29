@@ -46,14 +46,18 @@ public class OrdersController {
      * @return
      */
     @GetMapping("/page")
-    public R<Page> page(Integer page,Integer pageSize, String number) {
-        log.info("接收到的分页参数为:page:{};pageSize:{};number:{}", page, pageSize, number);
+    public R<Page> page(Integer page, Integer pageSize, String number, String beginTime, String endTime) {
+        log.info("接收到的分页参数为:page:{};pageSize:{};number:{};beginTime:{};endTime:{}", page, pageSize, number, beginTime, endTime);
 
         Page<Orders> pageInfo = new Page<>(page, pageSize);
         Page<OrdersDto> ordersDtoPage = new Page<>(page, pageSize);
 
         LambdaQueryWrapper<Orders> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(StringUtils.isNotEmpty(number), Orders::getId, number);
+
+        queryWrapper.like(number!=null,Orders::getNumber,number)
+                .gt(StringUtils.isNotEmpty(beginTime),Orders::getOrderTime,beginTime)
+                .lt(StringUtils.isNotEmpty(endTime),Orders::getOrderTime,endTime);
+
         queryWrapper.orderByDesc(Orders::getOrderTime);
         ordersService.page(pageInfo, queryWrapper);
 
