@@ -34,7 +34,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/sendMsg")
-    public R<String> sendMsg(@RequestBody User user, HttpSession session) {
+    public R<String> sendMsg(@RequestBody User user) {
         //获取手机号
         String phone = user.getPhone();
         if (StringUtils.isNotEmpty(phone)) {
