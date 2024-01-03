@@ -1,4 +1,4 @@
-package com.newmaster.reggie.pojo;
+package com.newmaster.reggie.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -9,42 +9,46 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
- * 套餐
+ 菜品
  */
 @Data
-public class Setmeal implements Serializable {
+public class Dish implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
 
 
-    //分类id
-    private Long categoryId;
-
-
-    //套餐名称
+    //菜品名称
     private String name;
 
 
-    //套餐价格
+    //菜品分类id
+    private Long categoryId;
+
+
+    //菜品价格
     private BigDecimal price;
 
 
-    //状态 0:停用 1:启用
-    private Integer status;
-
-
-    //编码
+    //商品码
     private String code;
+
+
+    //图片
+    private String image;
 
 
     //描述信息
     private String description;
 
 
-    //图片
-    private String image;
+    //0 停售 1 起售
+    private Integer status;
+
+
+    //顺序
+    private Integer sort;
 
 
     @TableField(fill = FieldFill.INSERT)
@@ -65,4 +69,5 @@ public class Setmeal implements Serializable {
 
     //是否删除
     private Integer isDeleted;
+
 }

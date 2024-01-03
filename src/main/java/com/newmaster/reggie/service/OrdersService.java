@@ -1,7 +1,7 @@
 package com.newmaster.reggie.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.newmaster.reggie.pojo.Orders;
+import com.newmaster.reggie.entity.Orders;
 
 public interface OrdersService extends IService<Orders> {
     /**

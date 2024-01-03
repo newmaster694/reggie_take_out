@@ -1,7 +1,7 @@
 package com.newmaster.reggie.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.newmaster.reggie.pojo.Setmeal;
+import com.newmaster.reggie.entity.Setmeal;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

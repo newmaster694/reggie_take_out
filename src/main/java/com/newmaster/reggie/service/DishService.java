@@ -2,7 +2,7 @@ package com.newmaster.reggie.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.newmaster.reggie.dto.DishDto;
-import com.newmaster.reggie.pojo.Dish;
+import com.newmaster.reggie.entity.Dish;
 
 import java.util.List;
 

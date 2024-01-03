@@ -1,7 +1,7 @@
 package com.newmaster.reggie.dto;
 
-import com.newmaster.reggie.pojo.OrderDetail;
-import com.newmaster.reggie.pojo.Orders;
+import com.newmaster.reggie.entity.OrderDetail;
+import com.newmaster.reggie.entity.Orders;
 import lombok.Data;
 
 import java.util.List;

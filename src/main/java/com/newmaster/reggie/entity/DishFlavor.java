@@ -1,39 +1,51 @@
-package com.newmaster.reggie.pojo;
+package com.newmaster.reggie.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import lombok.*;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 员工实体
+菜品口味
  */
 @Data
-public class Employee implements Serializable {
-    private static final long serVersionUID = 1L;
-    private Long id;
-    private String username;
-    private String name;
-    private String password;
-    private String phone;
-    private String sex;
-    private String idNumber;
-    private Short status;
+public class DishFlavor implements Serializable {
 
-    //@TableField注解:公共字段填充====>指定自动填充的策略
-    //FieldFill.INSERT:插入时填充字段
-    //FieldFill.INSERT_UPDATE:插入和更新时填充字段
+    private static final long serialVersionUID = 1L;
+
+    private Long id;
+
+
+    //菜品id
+    private Long dishId;
+
+
+    //口味名称
+    private String name;
+
+
+    //口味数据list
+    private String value;
+
+
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
+
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
+
     @TableField(fill = FieldFill.INSERT)
     private Long createUser;
 
+
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
+
+
+    //是否删除
+    private Integer isDeleted;
 }

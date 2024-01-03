@@ -1,4 +1,4 @@
-package com.newmaster.reggie.pojo;
+package com.newmaster.reggie.entity;
 
 import lombok.Data;
 import java.io.Serializable;

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.newmaster.reggie.common.BaseContext;
 import com.newmaster.reggie.common.R;
-import com.newmaster.reggie.pojo.AddressBook;
+import com.newmaster.reggie.entity.AddressBook;
 import com.newmaster.reggie.service.AddressBookService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

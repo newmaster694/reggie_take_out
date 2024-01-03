@@ -2,7 +2,7 @@ package com.newmaster.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.newmaster.reggie.common.R;
-import com.newmaster.reggie.pojo.User;
+import com.newmaster.reggie.entity.User;
 import com.newmaster.reggie.service.UserService;
 import com.newmaster.reggie.utils.ValidateCodeUtils;
 import lombok.extern.slf4j.Slf4j;

@@ -3,7 +3,7 @@ package com.newmaster.reggie.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.newmaster.reggie.common.R;
-import com.newmaster.reggie.pojo.Employee;
+import com.newmaster.reggie.entity.Employee;
 import com.newmaster.reggie.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;

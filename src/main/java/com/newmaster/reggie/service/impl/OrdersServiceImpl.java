@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.newmaster.reggie.common.BaseContext;
 import com.newmaster.reggie.common.CustomException;
 import com.newmaster.reggie.mapper.OrdersMapper;
-import com.newmaster.reggie.pojo.*;
+import com.newmaster.reggie.entity.*;
 import com.newmaster.reggie.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

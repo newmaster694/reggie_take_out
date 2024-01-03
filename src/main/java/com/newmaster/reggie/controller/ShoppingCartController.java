@@ -3,7 +3,7 @@ package com.newmaster.reggie.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.newmaster.reggie.common.BaseContext;
 import com.newmaster.reggie.common.R;
-import com.newmaster.reggie.pojo.ShoppingCart;
+import com.newmaster.reggie.entity.ShoppingCart;
 import com.newmaster.reggie.service.ShoppingCartService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.newmaster.reggie.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.newmaster.reggie.pojo.DishFlavor;
+import com.newmaster.reggie.entity.DishFlavor;
 
 public interface DishFlavorService extends IService<DishFlavor> {
 }

@@ -2,11 +2,11 @@ package com.newmaster.reggie.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.newmaster.reggie.common.CustomException;
-import com.newmaster.reggie.pojo.Category;
+import com.newmaster.reggie.entity.Category;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.newmaster.reggie.mapper.CategoryMapper;
-import com.newmaster.reggie.pojo.Dish;
-import com.newmaster.reggie.pojo.Setmeal;
+import com.newmaster.reggie.entity.Dish;
+import com.newmaster.reggie.entity.Setmeal;
 import com.newmaster.reggie.service.CategoryService;
 import com.newmaster.reggie.service.DishService;
 import com.newmaster.reggie.service.SetmealService;

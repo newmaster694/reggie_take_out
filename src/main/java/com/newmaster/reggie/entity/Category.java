@@ -1,4 +1,4 @@
-package com.newmaster.reggie.pojo;
+package com.newmaster.reggie.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;

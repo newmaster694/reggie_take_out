@@ -1,7 +1,7 @@
 package com.newmaster.reggie.dto;
 
-import com.newmaster.reggie.pojo.Setmeal;
-import com.newmaster.reggie.pojo.SetmealDish;
+import com.newmaster.reggie.entity.Setmeal;
+import com.newmaster.reggie.entity.SetmealDish;
 import lombok.Data;
 import java.util.List;
 

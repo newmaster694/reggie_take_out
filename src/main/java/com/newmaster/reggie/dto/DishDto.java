@@ -1,7 +1,7 @@
 package com.newmaster.reggie.dto;
 
-import com.newmaster.reggie.pojo.Dish;
-import com.newmaster.reggie.pojo.DishFlavor;
+import com.newmaster.reggie.entity.Dish;
+import com.newmaster.reggie.entity.DishFlavor;
 import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
