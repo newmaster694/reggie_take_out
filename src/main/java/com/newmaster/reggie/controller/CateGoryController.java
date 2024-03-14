@@ -38,13 +38,13 @@ public class CateGoryController {
      */
     @GetMapping("/page")
     public R<Page> page(Integer page, Integer pageSize) {
-        //分页构造器
+        // 分页构造器
         Page<Category> pageInfo = new Page<>(page, pageSize);
 
-        //条件构造器,根据sort字段条件排序
+        // 条件构造器,根据sort字段条件排序
         LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
 
-        //添加排序条件
+        // 添加排序条件
         queryWrapper.orderByAsc(Category::getSort);
 
         categoryService.page(pageInfo, queryWrapper);
@@ -61,7 +61,7 @@ public class CateGoryController {
     public R<String> delete(Long id) {
         log.info("删除分类,id为:{}", id);
 
-        //categoryService.removeById(id);
+        // categoryService.removeById(id);
         categoryService.remove(id);
 
         return R.success("分类信息删除成功");

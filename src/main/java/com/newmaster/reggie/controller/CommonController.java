@@ -53,7 +53,7 @@ public class CommonController {
     @GetMapping("/download")
     public void download(String name, HttpServletResponse response) throws IOException {
         // 输入流,通过输入流读取文件内容
-        String filePath = "K:\\Java Project\\reggie\\src\\main\\resources\\image\\";
+        String filePath = "/www/web_application/reggie/image/";
         FileInputStream fileInputStream = new FileInputStream(new File(filePath + name));
 
         // 输出流,通过输出流将文件写回浏览器,在浏览器里展示图片

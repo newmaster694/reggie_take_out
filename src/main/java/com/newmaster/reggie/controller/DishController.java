@@ -41,7 +41,6 @@ public class DishController {
 
     /**
      * 菜品分页查询
-     *
      * @param page
      * @param pageSize
      * @param name
@@ -91,7 +90,6 @@ public class DishController {
 
     /**
      * 新增菜品
-     *
      * @param dishDto
      * @return
      */
@@ -100,8 +98,9 @@ public class DishController {
         log.info(dishDto.toString());
         dishService.saveWithFlavor(dishDto);
 
-        //清理所有的Redis缓存数据
+        // 清理所有的Redis缓存数据
         Set keys = redisTemplate.keys("dish_*");
+        assert keys != null;
         redisTemplate.delete(keys);
 
         return R.success("新增菜品成功");
@@ -128,8 +127,9 @@ public class DishController {
         log.info(dishDto.toString());
         dishService.updateWithFlavor(dishDto);
 
-        //清理所有的Redis缓存数据
+        // 清理所有的Redis缓存数据
         Set keys = redisTemplate.keys("dish_*");
+        assert keys != null;
         redisTemplate.delete(keys);
 
         return R.success("修改菜品成功");
@@ -162,18 +162,18 @@ public class DishController {
 
         String key = "dish_" + dish.getCategoryId() + "_" + dish.getStatus();
 
-        //先从Redis中获取缓存数据
+        // 先从Redis中获取缓存数据
         dishDtoList = (List<DishDto>) redisTemplate.opsForValue().get(key);
 
-        //如果存在,直接返回,无需查询数据库
+        // 如果存在,直接返回,无需查询数据库
         if (dishDtoList != null) {
             return R.success(dishDtoList);
         }
 
-        //如果不存在,需要查询数据库,将查询到的菜品缓存到Redis
+        // 如果不存在,需要查询数据库,将查询到的菜品缓存到Redis
         LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(dish.getCategoryId() != null, Dish::getCategoryId, dish.getCategoryId());
-        //查询状态为1(起售)的菜品
+        // 查询状态为1(起售)的菜品
         queryWrapper.eq(Dish::getStatus, 1);
         queryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
         List<Dish> list = dishService.list(queryWrapper);
@@ -188,7 +188,7 @@ public class DishController {
                 String categoryName = category.getName();
                 dishDto.setCategoryName(categoryName);
             }
-            //当前菜品的id
+            // 当前菜品的id
             Long dishId = item.getId();
             LambdaQueryWrapper<DishFlavor> lambdaQueryWrapper = new LambdaQueryWrapper<>();
             lambdaQueryWrapper.eq(DishFlavor::getDishId, dishId);
