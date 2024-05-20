@@ -2,7 +2,7 @@ package com.newmaster.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.newmaster.reggie.common.R;
+import com.newmaster.reggie.common.Result;
 import com.newmaster.reggie.entity.Category;
 import com.newmaster.reggie.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +24,10 @@ public class CateGoryController {
      * @return
      */
     @PostMapping
-    public R<String> save(@RequestBody Category category) {
+    public Result<String> save(@RequestBody Category category) {
         log.info("新增分类:{}", category);
         categoryService.save(category);
-        return R.success("新增分类成功");
+        return Result.success("新增分类成功");
     }
 
     /**
@@ -37,7 +37,7 @@ public class CateGoryController {
      * @return
      */
     @GetMapping("/page")
-    public R<Page> page(Integer page, Integer pageSize) {
+    public Result<Page> page(Integer page, Integer pageSize) {
         // 分页构造器
         Page<Category> pageInfo = new Page<>(page, pageSize);
 
@@ -49,7 +49,7 @@ public class CateGoryController {
 
         categoryService.page(pageInfo, queryWrapper);
 
-        return R.success(pageInfo);
+        return Result.success(pageInfo);
     }
 
     /**
@@ -58,13 +58,13 @@ public class CateGoryController {
      * @return
      */
     @DeleteMapping
-    public R<String> delete(Long id) {
+    public Result<String> delete(Long id) {
         log.info("删除分类,id为:{}", id);
 
         // categoryService.removeById(id);
         categoryService.remove(id);
 
-        return R.success("分类信息删除成功");
+        return Result.success("分类信息删除成功");
     }
 
     /**
@@ -73,10 +73,10 @@ public class CateGoryController {
      * @return
      */
     @PutMapping
-    public R<String> update(@RequestBody Category category) {
+    public Result<String> update(@RequestBody Category category) {
         log.info("修改分类信息:{}", category);
         categoryService.updateById(category);
-        return R.success("修改成功");
+        return Result.success("修改成功");
     }
 
     /**
@@ -85,11 +85,11 @@ public class CateGoryController {
      * @return
      */
     @GetMapping("/list")
-    public R<List<Category>> list(Category category) {
+    public Result<List<Category>> list(Category category) {
         LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(category.getType() != null, Category::getType, category.getType());
         queryWrapper.orderByAsc(Category::getSort).orderByDesc(Category::getUpdateTime);
         List<Category> list = categoryService.list(queryWrapper);
-        return R.success(list);
+        return Result.success(list);
     }
 }

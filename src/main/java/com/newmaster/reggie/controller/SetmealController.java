@@ -3,7 +3,7 @@ package com.newmaster.reggie.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.newmaster.reggie.common.R;
+import com.newmaster.reggie.common.Result;
 import com.newmaster.reggie.dto.DishDto;
 import com.newmaster.reggie.dto.SetmealDto;
 import com.newmaster.reggie.entity.Category;
@@ -51,10 +51,10 @@ public class SetmealController {
      */
     @PostMapping
     @CacheEvict(value = "setmealCache", allEntries = true)
-    public R<String> save(@RequestBody SetmealDto setmealDto) {
+    public Result<String> save(@RequestBody SetmealDto setmealDto) {
         log.info("套餐信息:{}", setmealDto);
         setmealService.saveWithDish(setmealDto);
-        return R.success("新增套餐成功");
+        return Result.success("新增套餐成功");
     }
 
     /**
@@ -65,7 +65,7 @@ public class SetmealController {
      * @return
      */
     @GetMapping("/page")
-    public R<Page> page(Integer page, Integer pageSize, String name) {
+    public Result<Page> page(Integer page, Integer pageSize, String name) {
         log.info("分页查询信息,page:{}, pageSize:{}, name:{}", page, pageSize, name);
 
         Page<Setmeal> pageInfo = new Page<>(page, pageSize);
@@ -93,7 +93,7 @@ public class SetmealController {
 
         setmealDtoPage.setRecords(list);
 
-        return R.success(setmealDtoPage);
+        return Result.success(setmealDtoPage);
     }
 
     /**
@@ -103,10 +103,10 @@ public class SetmealController {
      */
     @DeleteMapping
     @CacheEvict(value = "setmealCache", allEntries = true)
-    public R<String> delete(@RequestParam List<Long> ids) {
+    public Result<String> delete(@RequestParam List<Long> ids) {
         log.info("ids:{}", ids);
         setmealService.removeWithDish(ids);
-        return R.success("删除菜品成功");
+        return Result.success("删除菜品成功");
     }
 
     /**
@@ -115,12 +115,12 @@ public class SetmealController {
      * @return
      */
     @PostMapping("/status/0")
-    public R<String> updateStop(@RequestParam List<Long> ids) {
+    public Result<String> updateStop(@RequestParam List<Long> ids) {
         log.info("停售的菜品id:{}", ids);
         LambdaUpdateWrapper<Setmeal> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.in(Setmeal::getId, ids).set(Setmeal::getStatus, 0);
         setmealService.update(updateWrapper);
-        return R.success("修改菜品成功");
+        return Result.success("修改菜品成功");
     }
 
     /**
@@ -129,12 +129,12 @@ public class SetmealController {
      * @return
      */
     @PostMapping("/status/1")
-    public R<String> updateStart(@RequestParam List<Long> ids) {
+    public Result<String> updateStart(@RequestParam List<Long> ids) {
         log.info("启售的菜品id:{}", ids);
         LambdaUpdateWrapper<Setmeal> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.in(Setmeal::getId, ids).set(Setmeal::getStatus, 1);
         setmealService.update(updateWrapper);
-        return R.success("修改菜品成功");
+        return Result.success("修改菜品成功");
     }
 
     /**
@@ -143,10 +143,10 @@ public class SetmealController {
      * @return
      */
     @GetMapping("/{id}")
-    public R<SetmealDto> get(@PathVariable Long id) {
+    public Result<SetmealDto> get(@PathVariable Long id) {
         log.info("查询的套餐id:{}", id);
         SetmealDto setmealDto = setmealService.getByIdWithCatgory(id);
-        return R.success(setmealDto);
+        return Result.success(setmealDto);
     }
 
     /**
@@ -156,10 +156,10 @@ public class SetmealController {
      */
     @PutMapping
     @CacheEvict(value = "setmealCache", allEntries = true)
-    public R<String> update(@RequestBody SetmealDto setmealDto) {
+    public Result<String> update(@RequestBody SetmealDto setmealDto) {
         log.info("修改的菜品信息:{}", setmealDto.toString());
         setmealService.updateWithDish(setmealDto);
-        return R.success("修改套餐成功!");
+        return Result.success("修改套餐成功!");
     }
 
     /**
@@ -169,7 +169,7 @@ public class SetmealController {
      */
     @GetMapping("/list")
     @Cacheable(value = "setmealCache", key = "#setmeal.categoryId + '_' + #setmeal.status")
-    public R<List<Setmeal>> list(Setmeal setmeal) {
+    public Result<List<Setmeal>> list(Setmeal setmeal) {
         LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(setmeal.getCategoryId() != null, Setmeal::getCategoryId, setmeal.getCategoryId());
         queryWrapper.eq(setmeal.getStatus() != null, Setmeal::getStatus, setmeal.getStatus());
@@ -177,7 +177,7 @@ public class SetmealController {
 
         List<Setmeal> list = setmealService.list(queryWrapper);
 
-        return R.success(list);
+        return Result.success(list);
     }
 
     /**
@@ -186,13 +186,13 @@ public class SetmealController {
      * @return
      */
     @GetMapping("/dish/{id}")
-    public R<List<DishDto>> getDishBySetmealId(@PathVariable Long id) {
+    public Result<List<DishDto>> getDishBySetmealId(@PathVariable Long id) {
         log.info("查询的套餐id: {}", id);
 
         // 查询套餐信息
         Setmeal setmeal = setmealService.getById(id);
         if (setmeal == null) {
-            return R.error("套餐不存在");
+            return Result.error("套餐不存在");
         }
 
         // 查询套餐关联的菜品信息
@@ -213,6 +213,6 @@ public class SetmealController {
             return dishDto;
         }).collect(Collectors.toList());
 
-        return R.success(dishDtoList);
+        return Result.success(dishDtoList);
     }
 }

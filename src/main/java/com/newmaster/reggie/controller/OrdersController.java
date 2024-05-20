@@ -2,7 +2,7 @@ package com.newmaster.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.newmaster.reggie.common.R;
+import com.newmaster.reggie.common.Result;
 import com.newmaster.reggie.dto.OrdersDto;
 import com.newmaster.reggie.entity.Orders;
 import com.newmaster.reggie.entity.User;
@@ -33,10 +33,10 @@ public class OrdersController {
      * @return
      */
     @PostMapping("/submit")
-    public R<String> submit(@RequestBody Orders orders) {
+    public Result<String> submit(@RequestBody Orders orders) {
         log.info("订单数据:{}", orders);
         ordersService.submit(orders);
-        return R.success("下单成功");
+        return Result.success("下单成功");
     }
 
     /**
@@ -49,7 +49,7 @@ public class OrdersController {
      * @return
      */
     @GetMapping("/page")
-    public R<Page> page(Integer page, Integer pageSize, String number, String beginTime, String endTime) {
+    public Result<Page> page(Integer page, Integer pageSize, String number, String beginTime, String endTime) {
         log.info("接收到的分页参数为:page:{};pageSize:{};number:{};beginTime:{};endTime:{}", page, pageSize, number, beginTime, endTime);
 
         Page<Orders> pageInfo = new Page<>(page, pageSize);
@@ -80,7 +80,7 @@ public class OrdersController {
 
         ordersDtoPage.setRecords(list);
 
-        return R.success(ordersDtoPage);
+        return Result.success(ordersDtoPage);
     }
 
     /**
@@ -89,9 +89,9 @@ public class OrdersController {
      * @return
      */
     @PutMapping
-    public R<String> updateStatus(@RequestBody Orders orders) {
+    public Result<String> updateStatus(@RequestBody Orders orders) {
         log.info("接收到的数据:{}", orders);
         ordersService.updateById(orders);
-        return R.success("修改信息成功!");
+        return Result.success("修改信息成功!");
     }
 }

@@ -3,7 +3,7 @@ package com.newmaster.reggie.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.newmaster.reggie.common.BaseContext;
-import com.newmaster.reggie.common.R;
+import com.newmaster.reggie.common.Result;
 import com.newmaster.reggie.entity.AddressBook;
 import com.newmaster.reggie.service.AddressBookService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,11 +25,11 @@ public class AddressBookController {
      * @return
      */
     @PostMapping
-    public R<AddressBook> save(@RequestBody AddressBook addressBook) {
+    public Result<AddressBook> save(@RequestBody AddressBook addressBook) {
         addressBook.setUserId(BaseContext.getCurrentId());
         log.info("addressBook:{}", addressBook);
         addressBookService.save(addressBook);
-        return R.success(addressBook);
+        return Result.success(addressBook);
     }
 
     /**
@@ -38,7 +38,7 @@ public class AddressBookController {
      * @return
      */
     @PutMapping("/default")
-    public R<AddressBook> setDefault(@RequestBody AddressBook addressBook) {
+    public Result<AddressBook> setDefault(@RequestBody AddressBook addressBook) {
         log.info("addressBook:{}", addressBook);
         LambdaUpdateWrapper<AddressBook> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(AddressBook::getUserId, BaseContext.getCurrentId());
@@ -50,7 +50,7 @@ public class AddressBookController {
         //SQL:update address_book set is_default=1 where id=?
         addressBookService.updateById(addressBook);
 
-        return R.success(addressBook);
+        return Result.success(addressBook);
     }
 
     /**
@@ -59,21 +59,21 @@ public class AddressBookController {
      * @return
      */
     @GetMapping("/{id}")
-    public R<AddressBook> get(@PathVariable Long id) {
+    public Result<AddressBook> get(@PathVariable Long id) {
         AddressBook addressBook = addressBookService.getById(id);
         if(addressBook != null) {
-            return R.success(addressBook);
+            return Result.success(addressBook);
         } else {
-            return R.error("没有找到对象!");
+            return Result.error("没有找到对象!");
         }
     }
 
     /**
      * 查询默认地址
-     * @return R<AddressBook>
+     * @return Result<AddressBook>
      */
     @GetMapping("/default")
-    public R<AddressBook> getDefault() {
+    public Result<AddressBook> getDefault() {
         LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(AddressBook::getUserId, BaseContext.getCurrentId());
         queryWrapper.eq(AddressBook::getIsDefault, 1);
@@ -81,9 +81,9 @@ public class AddressBookController {
         AddressBook addressBook = addressBookService.getOne(queryWrapper);
 
         if (null == addressBook) {
-            return R.error("没有找到对象");
+            return Result.error("没有找到对象");
         } else {
-            return R.success(addressBook);
+            return Result.success(addressBook);
         }
     }
 
@@ -93,12 +93,12 @@ public class AddressBookController {
      * @return
      */
     @GetMapping("/list")
-    public R<List<AddressBook>> list(AddressBook addressBook) {
+    public Result<List<AddressBook>> list(AddressBook addressBook) {
         addressBook.setUserId(BaseContext.getCurrentId());
         log.info("addressBook:{}", addressBook);
         LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(null != addressBook.getUserId(), AddressBook::getUserId, addressBook.getUserId());
         queryWrapper.orderByDesc(AddressBook::getUpdateTime);
-        return R.success(addressBookService.list(queryWrapper));
+        return Result.success(addressBookService.list(queryWrapper));
     }
 }

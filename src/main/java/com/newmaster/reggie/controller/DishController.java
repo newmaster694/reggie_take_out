@@ -3,7 +3,7 @@ package com.newmaster.reggie.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.newmaster.reggie.common.R;
+import com.newmaster.reggie.common.Result;
 import com.newmaster.reggie.dto.DishDto;
 import com.newmaster.reggie.entity.Category;
 import com.newmaster.reggie.entity.Dish;
@@ -47,7 +47,7 @@ public class DishController {
      * @return
      */
     @GetMapping("/page")
-    public R<Page> page(Integer page, Integer pageSize, String name) {
+    public Result<Page> page(Integer page, Integer pageSize, String name) {
         log.info("page:{};pageSize:{};name:{}", page, pageSize, name);
         // 分页构造器
         Page<Dish> pageInfo = new Page<>(page, pageSize);
@@ -85,7 +85,7 @@ public class DishController {
 
         dishDtoPage.setRecords(list);
 
-        return R.success(dishDtoPage);
+        return Result.success(dishDtoPage);
     }
 
     /**
@@ -94,7 +94,7 @@ public class DishController {
      * @return
      */
     @PostMapping
-    public R<String> save(@RequestBody DishDto dishDto) {
+    public Result<String> save(@RequestBody DishDto dishDto) {
         log.info(dishDto.toString());
         dishService.saveWithFlavor(dishDto);
 
@@ -103,7 +103,7 @@ public class DishController {
         assert keys != null;
         redisTemplate.delete(keys);
 
-        return R.success("新增菜品成功");
+        return Result.success("新增菜品成功");
     }
 
     /**
@@ -112,9 +112,9 @@ public class DishController {
      * @return
      */
     @GetMapping("/{id}")
-    public R<DishDto> get(@PathVariable Long id) {
+    public Result<DishDto> get(@PathVariable Long id) {
         DishDto dishDto = dishService.getByIdWithFlavor(id);
-        return R.success(dishDto);
+        return Result.success(dishDto);
     }
 
     /**
@@ -123,7 +123,7 @@ public class DishController {
      * @return
      */
     @PutMapping
-    public R<String> update(@RequestBody DishDto dishDto) {
+    public Result<String> update(@RequestBody DishDto dishDto) {
         log.info(dishDto.toString());
         dishService.updateWithFlavor(dishDto);
 
@@ -132,7 +132,7 @@ public class DishController {
         assert keys != null;
         redisTemplate.delete(keys);
 
-        return R.success("修改菜品成功");
+        return Result.success("修改菜品成功");
     }
 
     // /**
@@ -141,14 +141,14 @@ public class DishController {
     //  * @return
     //  */
     // @GetMapping("/list")
-    // public R<List<Dish>> list(Dish dish) {
+    // public Result<List<Dish>> list(Dish dish) {
     //     LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
     //     queryWrapper.eq(dish.getCategoryId() != null, Dish::getCategoryId, dish.getCategoryId());
     //     //查询状态为1(起售)的菜品
     //     queryWrapper.eq(Dish::getStatus, 1);
     //     queryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
     //     List<Dish> list = dishService.list(queryWrapper);
-    //     return R.success(list);
+    //     return Result.success(list);
     // }
 
     /**
@@ -157,7 +157,7 @@ public class DishController {
      * @return
      */
     @GetMapping("/list")
-    public R<List<DishDto>> list(Dish dish) {
+    public Result<List<DishDto>> list(Dish dish) {
         List<DishDto> dishDtoList = null;
 
         String key = "dish_" + dish.getCategoryId() + "_" + dish.getStatus();
@@ -167,12 +167,13 @@ public class DishController {
 
         // 如果存在,直接返回,无需查询数据库
         if (dishDtoList != null) {
-            return R.success(dishDtoList);
+            return Result.success(dishDtoList);
         }
 
         // 如果不存在,需要查询数据库,将查询到的菜品缓存到Redis
         LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(dish.getCategoryId() != null, Dish::getCategoryId, dish.getCategoryId());
+
         // 查询状态为1(起售)的菜品
         queryWrapper.eq(Dish::getStatus, 1);
         queryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
@@ -199,7 +200,7 @@ public class DishController {
 
         redisTemplate.opsForValue().set(key, dishDtoList, 60, TimeUnit.MINUTES);
 
-        return R.success(dishDtoList);
+        return Result.success(dishDtoList);
     }
 
     /**
@@ -208,10 +209,10 @@ public class DishController {
      * @return
      */
     @DeleteMapping
-    public R<String> delete(@RequestParam List<Long> ids) {
+    public Result<String> delete(@RequestParam List<Long> ids) {
         log.info("ids:{}", ids);
         dishService.removeWithFlavor(ids);
-        return R.success("删除菜品成功!");
+        return Result.success("删除菜品成功!");
     }
 
     /**
@@ -220,12 +221,12 @@ public class DishController {
      * @return
      */
     @PostMapping("/status/0")
-    public R<String> updateStop(@RequestParam List<Long> ids) {
+    public Result<String> updateStop(@RequestParam List<Long> ids) {
         log.info("停售的菜品ids:{}", ids);
         LambdaUpdateWrapper<Dish> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.in(Dish::getId, ids).set(Dish::getStatus, 0);
         dishService.update(updateWrapper);
-        return R.success("菜品修改成功");
+        return Result.success("菜品修改成功");
     }
 
     /**
@@ -234,11 +235,11 @@ public class DishController {
      * @return
      */
     @PostMapping("/status/1")
-    public R<String> updateStart(@RequestParam List<Long> ids) {
+    public Result<String> updateStart(@RequestParam List<Long> ids) {
         log.info("起售的菜品ids:{}", ids);
         LambdaUpdateWrapper<Dish> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.in(Dish::getId, ids).set(Dish::getStatus, 1);
         dishService.update(updateWrapper);
-        return R.success("菜品修改成功");
+        return Result.success("菜品修改成功");
     }
 }

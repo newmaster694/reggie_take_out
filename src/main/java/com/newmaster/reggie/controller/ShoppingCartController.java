@@ -2,7 +2,7 @@ package com.newmaster.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.newmaster.reggie.common.BaseContext;
-import com.newmaster.reggie.common.R;
+import com.newmaster.reggie.common.Result;
 import com.newmaster.reggie.entity.ShoppingCart;
 import com.newmaster.reggie.service.ShoppingCartService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class ShoppingCartController {
      * @return
      */
     @PostMapping("/add")
-    public R<ShoppingCart> add(@RequestBody ShoppingCart shoppingCart) {
+    public Result<ShoppingCart> add(@RequestBody ShoppingCart shoppingCart) {
         log.info("购物车数据:{}", shoppingCart);
 
         // 设置用户id,指定当前是哪一个用户的购物车数据
@@ -59,7 +59,7 @@ public class ShoppingCartController {
             shoppingCartService.save(shoppingCart);
             cartServiceOne = shoppingCart;
         }
-        return R.success(cartServiceOne);
+        return Result.success(cartServiceOne);
     }
 
     /**
@@ -68,13 +68,13 @@ public class ShoppingCartController {
      * @return
      */
     @GetMapping("/list")
-    public R<List<ShoppingCart>> list() {
+    public Result<List<ShoppingCart>> list() {
         log.info("查看购物车...");
         LambdaQueryWrapper<ShoppingCart> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ShoppingCart::getUserId, BaseContext.getCurrentId());
         queryWrapper.orderByAsc(ShoppingCart::getCreateTime);// 最后添加的菜品最先展示
         List<ShoppingCart> list = shoppingCartService.list(queryWrapper);
-        return R.success(list);
+        return Result.success(list);
     }
 
     /**
@@ -83,11 +83,11 @@ public class ShoppingCartController {
      * @return
      */
     @DeleteMapping("/clean")
-    public R<String> clean() {
+    public Result<String> clean() {
         log.info("删除购物车方法");
         LambdaQueryWrapper<ShoppingCart> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ShoppingCart::getUserId, BaseContext.getCurrentId());
         shoppingCartService.remove(queryWrapper);
-        return R.success("清空购物车成功!");
+        return Result.success("清空购物车成功!");
     }
 }

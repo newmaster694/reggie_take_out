@@ -3,7 +3,7 @@ package com.newmaster.reggie.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.newmaster.reggie.common.BaseContext;
-import com.newmaster.reggie.common.R;
+import com.newmaster.reggie.common.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
 
@@ -70,7 +70,7 @@ public class LoginCheckFilter implements Filter{
         }
 
         //5.如果未登录,则返回未登录结果,通过输出流的方式来向客户端响应数据
-        response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
+        response.getWriter().write(JSON.toJSONString(Result.error("NOTLOGIN")));
     }
 
     /**

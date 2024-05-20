@@ -1,7 +1,7 @@
 package com.newmaster.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.newmaster.reggie.common.R;
+import com.newmaster.reggie.common.Result;
 import com.newmaster.reggie.entity.User;
 import com.newmaster.reggie.service.UserService;
 import com.newmaster.reggie.utils.ValidateCodeUtils;
@@ -34,7 +34,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/sendMsg")
-    public R<String> sendMsg(@RequestBody User user) {
+    public Result<String> sendMsg(@RequestBody User user) {
         //获取手机号
         String phone = user.getPhone();
         if (StringUtils.isNotEmpty(phone)) {
@@ -51,9 +51,9 @@ public class UserController {
             //1.将随机生成的验证码缓存到Redis中,并设置有效期为5分钟(原先的session默认有效期是30分钟)
             redisTemplate.opsForValue().set(phone, code, 5, TimeUnit.MINUTES);
 
-            return R.success("手机验证码发送成功!");
+            return Result.success("手机验证码发送成功!");
         }
-        return R.error("短信发送失败");
+        return Result.error("短信发送失败");
     }
 
     /**
@@ -63,7 +63,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    public R<User> login(@RequestBody Map map, HttpSession session) {
+    public Result<User> login(@RequestBody Map map, HttpSession session) {
         log.info(map.toString());
 
         //获取手机号
@@ -96,9 +96,9 @@ public class UserController {
 
             //2.如果用户登录成功,则将缓存的验证码删除
             redisTemplate.delete(phone);
-            return R.success(user);
+            return Result.success(user);
         }
 
-        return R.error("登录失败");
+        return Result.error("登录失败");
     }
 }

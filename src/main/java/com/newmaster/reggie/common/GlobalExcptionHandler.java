@@ -2,18 +2,16 @@ package com.newmaster.reggie.common;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 
 /**
  * 全局异常处理器
  */
-@ControllerAdvice(annotations = {RestController.class, Controller.class})
-@ResponseBody
+// @ControllerAdvice(annotations = {RestController.class, Controller.class})
+// @ResponseBody
+@RestControllerAdvice(annotations = {RestController.class, Controller.class})
 @Slf4j
 public class GlobalExcptionHandler {
     /**
@@ -22,16 +20,16 @@ public class GlobalExcptionHandler {
      * @return
      */
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    public R<String> excptionHandler(SQLIntegrityConstraintViolationException ex) {
+    public Result<String> excptionHandler(SQLIntegrityConstraintViolationException ex) {
         log.error(ex.getMessage());
 
         if (ex.getMessage().contains("Duplicate entry")) {
             String[] split = ex.getMessage().split(" ");
             String msg = split[2] + "已存在";
-            return R.error(msg);
+            return Result.error(msg);
         }
 
-        return R.error("未知错误");
+        return Result.error("未知错误");
     }
 
     /**
@@ -40,9 +38,9 @@ public class GlobalExcptionHandler {
      * @return
      */
     @ExceptionHandler(CustomException.class)
-    public R<String> excptionHandler(CustomException ex) {
+    public Result<String> excptionHandler(CustomException ex) {
         log.error(ex.getMessage());
 
-        return R.error(ex.getMessage());
+        return Result.error(ex.getMessage());
     }
 }

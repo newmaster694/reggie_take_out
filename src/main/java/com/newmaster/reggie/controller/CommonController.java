@@ -1,7 +1,7 @@
 package com.newmaster.reggie.controller;
 
 import com.newmaster.reggie.common.CustomException;
-import com.newmaster.reggie.common.R;
+import com.newmaster.reggie.common.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +26,7 @@ public class CommonController {
      * @return
      */
     @PostMapping("/upload")
-    public R<String> upload(MultipartFile file) throws IOException {
+    public Result<String> upload(MultipartFile file) throws IOException {
         // file是一个临时文件,需要转存到指定位置,否则本次请求完成后临时文件会删除
         log.info(file.toString());
 
@@ -41,7 +41,7 @@ public class CommonController {
         String uuid = UUID.randomUUID().toString();
         String FileName = uuid + suffixName;
         file.transferTo(new File(FileName));
-        return R.success(FileName);
+        return Result.success(FileName);
     }
 
     /**
