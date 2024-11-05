@@ -9,8 +9,6 @@ import java.sql.SQLIntegrityConstraintViolationException;
 /**
  * 全局异常处理器
  */
-// @ControllerAdvice(annotations = {RestController.class, Controller.class})
-// @ResponseBody
 @RestControllerAdvice(annotations = {RestController.class, Controller.class})
 @Slf4j
 public class GlobalExcptionHandler {
